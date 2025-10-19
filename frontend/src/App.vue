@@ -5,7 +5,7 @@
         <!-- Logo/Brand -->
         <div class="navbar-brand">
           <router-link to="/home" class="brand-link">
-            <span class="brand-icon">🎓</span>
+            <img :src="LOGO_PATH" alt="Logo" class="brand-icon" />
             <span class="brand-text">{{ OJ_NAME }}</span>
           </router-link>
         </div>
@@ -19,51 +19,23 @@
           <span :class="['hamburger', { active: isMobileMenuOpen }]"></span>
         </button>
 
-        <!-- Navigation Links -->
-        <ul :class="['nav-links', { active: isMobileMenuOpen }]">
-          <li class="nav-item">
-            <router-link to="/home" class="nav-link" @click="closeMobileMenu">
-              <span class="nav-icon">🏠</span>
-              <span class="nav-text">主页</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link
-              to="/problems"
-              class="nav-link"
-              @click="closeMobileMenu"
-            >
-              <span class="nav-icon">📚</span>
-              <span class="nav-text">题库</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link
-              to="/contests"
-              class="nav-link"
-              @click="closeMobileMenu"
-            >
-              <span class="nav-icon">🏆</span>
-              <span class="nav-text">比赛</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link
-              to="/tutorials"
-              class="nav-link"
-              @click="closeMobileMenu"
-            >
-              <span class="nav-icon">💡</span>
-              <span class="nav-text">教程</span>
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/punch" class="nav-link" @click="closeMobileMenu">
-              <span class="nav-icon">✅</span>
-              <span class="nav-text">打卡</span>
-            </router-link>
-          </li>
-        </ul>
+        <!-- Navigation Tabs with Radio Style -->
+        <div :class="['navbar-menu', { active: isMobileMenuOpen }]">
+          <router-link
+            v-for="navRoute in navRoutes"
+            :key="navRoute.path"
+            :to="navRoute.path"
+            class="navbar-menu-item"
+            @click="closeMobileMenu"
+          >
+            <span>
+              <span v-if="navRoute.icon" class="nav-icon">{{
+                navRoute.icon
+              }}</span>
+              {{ navRoute.name }}
+            </span>
+          </router-link>
+        </div>
 
         <!-- Right Section -->
         <div :class="['navbar-right', { active: isMobileMenuOpen }]">
@@ -87,7 +59,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { OJ_NAME } from "@/config/constants";
+// import { useRoute } from "vue-router";
+import { OJ_NAME, LOGO_PATH, NAV_ROUTES } from "@/config/constants";
 
 export default defineComponent({
   name: "App",
@@ -104,6 +77,8 @@ export default defineComponent({
 
     return {
       OJ_NAME,
+      LOGO_PATH,
+      navRoutes: NAV_ROUTES,
       isMobileMenuOpen,
       toggleMobileMenu,
       closeMobileMenu,
